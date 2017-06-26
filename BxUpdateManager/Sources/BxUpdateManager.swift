@@ -187,10 +187,8 @@ open class BxUpdateManager: AnyObject {
                     guard let this = self else {
                         return
                     }
-                    if this.isUpdating {
-                        this.isUpdating = true
-                        this.delegate?.updateManagerLoadData(this)
-                    }
+                    this.isUpdating = true
+                    this.delegate?.updateManagerLoadData(this)
                 })
             }
         } else if (fabs(checkLocalUpdateInterface.timeIntervalSinceNow) > updateInterfaceInterval) {
