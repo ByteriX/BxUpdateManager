@@ -6,6 +6,10 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
+## 0.9.2 (26.06.2017)
+##### Improvements
+* added toUpdateData(), resetUpdateDataTime(), toUpdateInterface(), resetUpdateInterfaceTime()
+
 ## 0.9.1 (26.06.2017)
 ##### Bug fixing
 * fixed issue with uncallig load data

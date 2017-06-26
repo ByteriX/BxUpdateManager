@@ -157,7 +157,7 @@ open class BxUpdateManager: AnyObject {
                 guard let this = self else {
                     return
                 }
-                this.checkLocalUpdateInterface = Date()
+                this.resetUpdateInterfaceTime()
                 this.isUpdating = false
                 if (this.isWaittingNextUpdate) {
                     self?.internalUpdateData()
@@ -165,20 +165,32 @@ open class BxUpdateManager: AnyObject {
         }
     }
     
-    func invalidateUpdatedTime() {
-        checkLocalUpdateData = Date().addingTimeInterval( -2 * updateDataInterval)
+    public func toUpdateData() {
+        checkLocalUpdateData = Date().addingTimeInterval( -1 * updateDataInterval - 1)
+    }
+    
+    public func resetUpdateDataTime() {
+        checkLocalUpdateData = Date()
+    }
+    
+    public func toUpdateInterface() {
+        checkLocalUpdateInterface = Date().addingTimeInterval( -1 * updateInterfaceInterval - 1)
+    }
+    
+    public func resetUpdateInterfaceTime() {
+        checkLocalUpdateInterface = Date()
     }
     
     // this method only work in dataUpdateQueue
     internal func internalUpdateData() {
-        invalidateUpdatedTime()
+        toUpdateData()
         internalCheckUpdate()
     }
     
     // this method only work in dataUpdateQueue
     internal func internalCheckUpdate() {
         if (fabs(checkLocalUpdateData.timeIntervalSinceNow) > updateDataInterval) {
-            checkLocalUpdateData = Date()
+            resetUpdateDataTime()
             if isUpdating {
                 isWaittingNextUpdate = true
             } else {
@@ -192,7 +204,7 @@ open class BxUpdateManager: AnyObject {
                 })
             }
         } else if (fabs(checkLocalUpdateInterface.timeIntervalSinceNow) > updateInterfaceInterval) {
-            checkLocalUpdateInterface = Date()
+            resetUpdateInterfaceTime()
             DispatchQueue.main.sync(execute: {[weak self]() -> Void in
                 self?.updateInterfaceExecute()
             })
