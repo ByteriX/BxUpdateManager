@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
   s.version      = "VERSION_NUMBER"
   s.summary      = "Swift manager for checking update from network and local."
   s.description  = "Swift manager for checking update from network and local."
+  s.homepage     = "https://github.com/ByteriX/BxUpdateManager.git"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
