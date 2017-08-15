@@ -36,14 +36,14 @@ open class BxUpdateManager: AnyObject {
     
     // MARK - this use from main thread
     
-    internal(set) var error: Error? = nil
-    internal(set) var lastLocalUpdateData: Date = Date(timeIntervalSince1970: 0)
-    internal(set) var lastLocalUpdateInterface: Date = Date()
+    internal(set) public var error: Error? = nil
+    internal(set) public var lastLocalUpdateData: Date = Date(timeIntervalSince1970: 0)
+    internal(set) public var lastLocalUpdateInterface: Date = Date()
     
     
     // MARK - this use from checkUpdateQueue only
-    internal(set) var isUpdating: Bool = false
-    internal(set) var isWaittingNextUpdate = false
+    internal(set) public var isUpdating: Bool = false
+    internal(set) public var isWaittingNextUpdate = false
     fileprivate var checkLocalUpdateData: Date = Date(timeIntervalSince1970: 0)
     fileprivate var checkLocalUpdateInterface: Date = Date()
     

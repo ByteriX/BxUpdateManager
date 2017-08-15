@@ -6,6 +6,10 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
+## 0.9.3 (15.08.2017)
+##### Improvements
+* made public getter methods
+
 ## 0.9.2 (26.06.2017)
 ##### Improvements
 * added toUpdateData(), resetUpdateDataTime(), toUpdateInterface(), resetUpdateInterfaceTime()
