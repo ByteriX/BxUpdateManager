@@ -1,10 +1,13 @@
 # Copyright
 
 BxUpdateManager is a manager for checking update from network and local
-
 ByteriX, 2017. All right reserved.
 
 # Versions
+
+## 0.9.4 (25.08.2017)
+##### Improvements
+* added timePeriod property. That fix cyclic update
 
 ## 0.9.3 (15.08.2017)
 ##### Improvements

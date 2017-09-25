@@ -14,6 +14,11 @@
 import Foundation
 import Reachability
 
+public enum BxUpdateManagerTimePeriod : Int {
+    case fromStartLoading
+    case fromStopLoading
+}
+
 public protocol BxUpdateManagerDelegate : AnyObject {
     
     /// This method need implement for loading data. In this body you must call stopLoading(with error) or stopLoading()
@@ -31,6 +36,7 @@ open class BxUpdateManager: AnyObject {
     public var updateDataInterval: TimeInterval
     public var updateInterfaceInterval: TimeInterval
     public var checkInterval: TimeInterval
+    public var timePeriod: BxUpdateManagerTimePeriod
     
     public weak var delegate: BxUpdateManagerDelegate? = nil
     
@@ -83,11 +89,13 @@ open class BxUpdateManager: AnyObject {
     
     public init(updateDataInterval: TimeInterval = 60.0,
         updateInterfaceInterval: TimeInterval = 10.0,
-        checkInterval: TimeInterval = 5.0)
+        checkInterval: TimeInterval = 5.0,
+        timePeriod: BxUpdateManagerTimePeriod = .fromStopLoading)
     {
         self.updateDataInterval = updateDataInterval
         self.updateInterfaceInterval = updateInterfaceInterval
         self.checkInterval = checkInterval
+        self.timePeriod = timePeriod
     
         NotificationCenter.default.addObserver(self, selector: #selector(checkTimerUpdate), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         reachability.reachableBlock = { [weak self] (reachability) -> Void in
@@ -158,25 +166,32 @@ open class BxUpdateManager: AnyObject {
                     return
                 }
                 this.resetUpdateInterfaceTime()
+                if this.timePeriod == .fromStopLoading {
+                    self?.resetUpdateDataTime()
+                }
                 this.isUpdating = false
-                if (this.isWaittingNextUpdate) {
+                if this.isWaittingNextUpdate {
                     self?.internalUpdateData()
                 }
         }
     }
     
+    // TODO: this method only work in dataUpdateQueue
     public func toUpdateData() {
         checkLocalUpdateData = Date().addingTimeInterval( -1 * updateDataInterval - 1)
     }
     
+    // TODO: this method only work in dataUpdateQueue
     public func resetUpdateDataTime() {
         checkLocalUpdateData = Date()
     }
     
+    // TODO: this method only work in dataUpdateQueue
     public func toUpdateInterface() {
         checkLocalUpdateInterface = Date().addingTimeInterval( -1 * updateInterfaceInterval - 1)
     }
     
+    // TODO: this method only work in dataUpdateQueue
     public func resetUpdateInterfaceTime() {
         checkLocalUpdateInterface = Date()
     }
@@ -192,7 +207,9 @@ open class BxUpdateManager: AnyObject {
         if (fabs(checkLocalUpdateData.timeIntervalSinceNow) > updateDataInterval) {
             resetUpdateDataTime()
             if isUpdating {
-                isWaittingNextUpdate = true
+                if timePeriod == .fromStartLoading {
+                    isWaittingNextUpdate = true
+                }
             } else {
                 isWaittingNextUpdate = false
                 DispatchQueue.main.sync(execute: {[weak self]() -> Void in
