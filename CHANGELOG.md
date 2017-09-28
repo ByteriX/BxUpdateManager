@@ -5,7 +5,11 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
-## 0.9.4 (25.08.2017)
+## 0.9.5 (28.09.2017)
+##### Bug fixing
+* fixed updateData() when timePeriod == .fromStopLoading
+
+## 0.9.4 (25.09.2017)
 ##### Improvements
 * added timePeriod property. That fix cyclic update
 

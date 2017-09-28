@@ -31,7 +31,7 @@ public protocol BxUpdateManagerDelegate : AnyObject {
 }
 
 /// Manager for checking update from network and local.
-open class BxUpdateManager: AnyObject {
+open class BxUpdateManager {
     
     public var updateDataInterval: TimeInterval
     public var updateInterfaceInterval: TimeInterval
@@ -207,9 +207,7 @@ open class BxUpdateManager: AnyObject {
         if (fabs(checkLocalUpdateData.timeIntervalSinceNow) > updateDataInterval) {
             resetUpdateDataTime()
             if isUpdating {
-                if timePeriod == .fromStartLoading {
-                    isWaittingNextUpdate = true
-                }
+                isWaittingNextUpdate = true
             } else {
                 isWaittingNextUpdate = false
                 DispatchQueue.main.sync(execute: {[weak self]() -> Void in
@@ -225,6 +223,9 @@ open class BxUpdateManager: AnyObject {
             DispatchQueue.main.sync(execute: {[weak self]() -> Void in
                 self?.updateInterfaceExecute()
             })
+        }
+        if isUpdating && timePeriod == .fromStopLoading {
+            resetUpdateDataTime()
         }
     }
     
