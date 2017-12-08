@@ -21,7 +21,8 @@ public enum BxUpdateManagerTimePeriod : Int {
 
 public protocol BxUpdateManagerDelegate : AnyObject {
     
-    /// This method need implement for loading data. In this body you must call stopLoading(with error) or stopLoading()
+    /// This method need implement for loading data.
+    /// In this body you must call stopLoading(with error) or stopLoading()
     func updateManagerLoadData(_ updateManager: BxUpdateManager)
     /// It call when data updated or need refresh user interface
     func updateManagerUpdateInterface(_ updateManager: BxUpdateManager)
