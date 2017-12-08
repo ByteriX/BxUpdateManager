@@ -5,6 +5,11 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
+## 0.9.6 (08.12.2017)
+##### Improvements
+* changed description
+* Swift 3.2/4.0 supporting
+
 ## 0.9.5 (28.09.2017)
 ##### Bug fixing
 * fixed updateData() when timePeriod == .fromStopLoading
