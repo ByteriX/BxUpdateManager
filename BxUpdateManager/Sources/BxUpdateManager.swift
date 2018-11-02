@@ -34,6 +34,13 @@ public protocol BxUpdateManagerDelegate : AnyObject {
 /// Manager for checking update from network and local.
 open class BxUpdateManager {
     
+#if swift( >=4.2 )
+    static let enterForegroundNotification = UIApplication.willEnterForegroundNotification
+#else
+    static let enterForegroundNotification = NSNotification.Name.UIApplicationWillEnterForeground
+#endif
+    
+    
     public var updateDataInterval: TimeInterval
     public var updateInterfaceInterval: TimeInterval
     public var checkInterval: TimeInterval
@@ -98,7 +105,7 @@ open class BxUpdateManager {
         self.checkInterval = checkInterval
         self.timePeriod = timePeriod
     
-        NotificationCenter.default.addObserver(self, selector: #selector(checkTimerUpdate), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkTimerUpdate), name: BxUpdateManager.enterForegroundNotification, object: nil)
         reachability.reachableBlock = { [weak self] (reachability) -> Void in
             DispatchQueue.main.async(execute: {[weak self]() -> Void in
                 self?.checkUpdateWithError()
@@ -108,7 +115,7 @@ open class BxUpdateManager {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: BxUpdateManager.enterForegroundNotification, object: nil)
         ({active = false})()
     }
     
