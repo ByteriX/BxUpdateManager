@@ -88,7 +88,7 @@ class SimpleController: UIViewController, BxUpdateManagerDelegate {
 	let dataManager = BxUpdateManager(updateDataInterval: 15.0,
         updateInterfaceInterval: 5.0,
         checkInterval: 1.0,
-        timePeriod: .fromStopLoading,
+        waitingStrategy: .fromStopLoading,
         isActive: false)
 	
     override func viewDidLoad() {

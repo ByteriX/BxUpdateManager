@@ -31,10 +31,11 @@ public protocol BxUpdateManagerDelegate : AnyObject {
 /// Manager for checking update from network and local.
 open class BxUpdateManager {
     
-    public enum TimePeriod : Int {
-        /// next iteration calling will initiate immediatly with starting of a loading data
+    /// Waiting beetwen loading iteration can use different stratagies
+    public enum WaitingStrategy : Int {
+        /// next iteration waiting will initiate immediatly with starting of a loading data
         case fromStartLoading
-        /// next iteration calling will initiate only when a loading data has ended
+        /// next iteration waiting will initiate only when a loading data has ended
         case fromStopLoading
     }
     
@@ -44,26 +45,31 @@ open class BxUpdateManager {
     static let enterForegroundNotification = NSNotification.Name.UIApplicationWillEnterForeground
 #endif
     
-    
+    /// Interval for waiting new iteration of a data updating
     public var updateDataInterval: TimeInterval
+    /// Interval for waiting new iteration of a interface updating
     public var updateInterfaceInterval: TimeInterval
+    /// Timer interval for checking needing of updates
     public var checkInterval: TimeInterval
-    public var timePeriod: TimePeriod
+    /// Waiting beetwen loading iteration can use different stratagies
+    public var waitingStrategy: WaitingStrategy
     
+    /// delegate of manager
     public weak var delegate: BxUpdateManagerDelegate? = nil
     
     // MARK - this use from main thread
     
     internal(set) public var error: Error? = nil
-    internal(set) public var lastLocalUpdateData: Date = Date(timeIntervalSince1970: 0)
-    internal(set) public var lastLocalUpdateInterface: Date = Date()
+    internal(set) public var lastActivationDate: Date = Date(timeIntervalSince1970: 0)
+    internal(set) public var lastUpdateDataDate: Date = Date(timeIntervalSince1970: 0)
+    internal(set) public var lastUpdateInterfaceDate: Date = Date()
     
     
     // MARK - this use from checkUpdateQueue only
     internal(set) public var isUpdating: Bool = false
     internal(set) public var isWaittingNextUpdate = false
-    fileprivate var checkLocalUpdateData: Date = Date(timeIntervalSince1970: 0)
-    fileprivate var checkLocalUpdateInterface: Date = Date()
+    fileprivate var checkUpdateDataDate: Date = Date(timeIntervalSince1970: 0)
+    fileprivate var checkUpdateInterfaceDate: Date = Date()
     
     // MARK - it internal use
     fileprivate var timer: Timer? = nil
@@ -85,6 +91,7 @@ open class BxUpdateManager {
             timer?.invalidate()
             timer = nil
             if isActive {
+                lastActivationDate = Date()
                 timer = Timer.scheduledTimer(timeInterval: checkInterval, target: self, selector: #selector(checkTimerUpdate), userInfo: nil, repeats: true)
                 if isFirstActivated {
                     isFirstActivated = false
@@ -102,13 +109,13 @@ open class BxUpdateManager {
     public init(updateDataInterval: TimeInterval = 60.0,
         updateInterfaceInterval: TimeInterval = 10.0,
         checkInterval: TimeInterval = 5.0,
-        timePeriod: BxUpdateManager.TimePeriod = .fromStopLoading,
+        waitingStrategy: WaitingStrategy = .fromStopLoading,
         isActive: Bool = false)
     {
         self.updateDataInterval = updateDataInterval
         self.updateInterfaceInterval = updateInterfaceInterval
         self.checkInterval = checkInterval
-        self.timePeriod = timePeriod
+        self.waitingStrategy = waitingStrategy
     
         NotificationCenter.default.addObserver(self, selector: #selector(checkTimerUpdate), name: BxUpdateManager.enterForegroundNotification, object: nil)
         reachability.reachableBlock = { [weak self] (reachability) -> Void in
@@ -163,9 +170,11 @@ open class BxUpdateManager {
         self.didUpdateData()
     }
     
+    // MARK - private & internal methods
+    
     fileprivate func didUpdateData()
     {
-        lastLocalUpdateData = Date()
+        lastUpdateDataDate = Date()
         
         if let delegate = delegate {
             delegate.updateManagerUpdateData(self)
@@ -178,34 +187,34 @@ open class BxUpdateManager {
                     return
                 }
                 this.resetUpdateInterfaceTime()
-                if this.timePeriod == .fromStopLoading {
-                    self?.resetUpdateDataTime()
+                if this.waitingStrategy == .fromStopLoading {
+                    this.resetUpdateDataTime()
                 }
                 this.isUpdating = false
                 if this.isWaittingNextUpdate {
-                    self?.internalUpdateData()
+                    this.internalUpdateData()
                 }
         }
     }
     
     // this method only work in dataUpdateQueue
     private func toUpdateData() {
-        checkLocalUpdateData = Date().addingTimeInterval( -1 * updateDataInterval - 1)
+        checkUpdateDataDate = Date().addingTimeInterval( -1 * updateDataInterval - 1)
     }
     
     // this method only work in dataUpdateQueue
     private func resetUpdateDataTime() {
-        checkLocalUpdateData = Date()
+        checkUpdateDataDate = Date()
     }
     
     // this method only work in dataUpdateQueue
     private func toUpdateInterface() {
-        checkLocalUpdateInterface = Date().addingTimeInterval( -1 * updateInterfaceInterval - 1)
+        checkUpdateInterfaceDate = Date().addingTimeInterval( -1 * updateInterfaceInterval - 1)
     }
     
     // this method only work in dataUpdateQueue
     private func resetUpdateInterfaceTime() {
-        checkLocalUpdateInterface = Date()
+        checkUpdateInterfaceDate = Date()
     }
     
     // this method only work in dataUpdateQueue
@@ -216,7 +225,7 @@ open class BxUpdateManager {
     
     // this method only work in dataUpdateQueue
     internal func internalCheckUpdate() {
-        if (fabs(checkLocalUpdateData.timeIntervalSinceNow) > updateDataInterval) {
+        if (fabs(checkUpdateDataDate.timeIntervalSinceNow) > updateDataInterval) {
             resetUpdateDataTime()
             if isUpdating {
                 isWaittingNextUpdate = true
@@ -230,13 +239,13 @@ open class BxUpdateManager {
                     this.delegate?.updateManagerLoadData(this)
                 })
             }
-        } else if (fabs(checkLocalUpdateInterface.timeIntervalSinceNow) > updateInterfaceInterval) {
+        } else if (fabs(checkUpdateInterfaceDate.timeIntervalSinceNow) > updateInterfaceInterval) {
             resetUpdateInterfaceTime()
             DispatchQueue.main.sync(execute: {[weak self]() -> Void in
                 self?.updateInterfaceExecute()
             })
         }
-        if isUpdating && timePeriod == .fromStopLoading {
+        if isUpdating && waitingStrategy == .fromStopLoading {
             resetUpdateDataTime()
         }
     }
@@ -255,7 +264,7 @@ open class BxUpdateManager {
     
     private func didUpdateInterface()
     {
-        self.lastLocalUpdateInterface = Date()
+        self.lastUpdateInterfaceDate = Date()
     }
     
 }

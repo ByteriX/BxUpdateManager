@@ -9,8 +9,11 @@ ByteriX, 2017. All right reserved.
 ##### Improvements
 * renamed active to isActivated
 * edited access to private methods: didUpdateData(), toUpdateData(), resetUpdateDataTime(), toUpdateInterface(),  resetUpdateInterfaceTime(), updateInterfaceExecute(), didUpdateInterface()
+* moved BxUpdateManagerTimePeriod to BxUpdateManager.WaitingStrategy and rename timePeriod to waitingStrategy
 * changed a description and example
-* moved BxUpdateManagerTimePeriod to BxUpdateManager.TimePeriod
+* added lastActivationDate property
+* renamed lastLocalUpdateData to lastUpdateDataDate, lastLocalUpdateInterface to lastUpdateInterfaceDate
+
 
 ## 0.9.7 (03.11.2018)
 ##### Improvements
