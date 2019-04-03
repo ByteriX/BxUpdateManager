@@ -5,6 +5,12 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
+## 1.0.0 (03.04.2019)
+##### Improvements
+* renamed active to isActivated
+* edited access to private methods: didUpdateData(), toUpdateData(), resetUpdateDataTime(), toUpdateInterface(),  resetUpdateInterfaceTime(), updateInterfaceExecute(), didUpdateInterface()
+* changed a description and example
+
 ## 0.9.7 (03.11.2018)
 ##### Improvements
 * changed description

@@ -11,7 +11,7 @@ Swift manager for checking update from network and local.
 
 - iOS 8.0+
 - Swift 3.0+
-- Swift 3.x/4.x supported
+- Swift 3.x/4.x/5.0 supported
 
 ## Installation
 
@@ -31,7 +31,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-pod 'BxUpdateManager', '~> 0.9'
+pod 'BxUpdateManager', '~> 1.0.0'
 end
 ```
 
