@@ -14,10 +14,7 @@
 import Foundation
 import Reachability
 
-public enum BxUpdateManagerTimePeriod : Int {
-    case fromStartLoading
-    case fromStopLoading
-}
+
 
 public protocol BxUpdateManagerDelegate : AnyObject {
     
@@ -34,6 +31,13 @@ public protocol BxUpdateManagerDelegate : AnyObject {
 /// Manager for checking update from network and local.
 open class BxUpdateManager {
     
+    public enum TimePeriod : Int {
+        // next iteration calling will initiate immediatly with starting of a loading data
+        case fromStartLoading
+        // next iteration calling will initiate only when a loading data has ended
+        case fromStopLoading
+    }
+    
 #if swift( >=4.2 )
     static let enterForegroundNotification = UIApplication.willEnterForegroundNotification
 #else
@@ -44,7 +48,7 @@ open class BxUpdateManager {
     public var updateDataInterval: TimeInterval
     public var updateInterfaceInterval: TimeInterval
     public var checkInterval: TimeInterval
-    public var timePeriod: BxUpdateManagerTimePeriod
+    public var timePeriod: TimePeriod
     
     public weak var delegate: BxUpdateManagerDelegate? = nil
     
@@ -98,7 +102,7 @@ open class BxUpdateManager {
     public init(updateDataInterval: TimeInterval = 60.0,
         updateInterfaceInterval: TimeInterval = 10.0,
         checkInterval: TimeInterval = 5.0,
-        timePeriod: BxUpdateManagerTimePeriod = .fromStopLoading,
+        timePeriod: BxUpdateManager.TimePeriod = .fromStopLoading,
         isActive: Bool = false)
     {
         self.updateDataInterval = updateDataInterval

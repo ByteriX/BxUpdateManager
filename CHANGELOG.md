@@ -10,6 +10,7 @@ ByteriX, 2017. All right reserved.
 * renamed active to isActivated
 * edited access to private methods: didUpdateData(), toUpdateData(), resetUpdateDataTime(), toUpdateInterface(),  resetUpdateInterfaceTime(), updateInterfaceExecute(), didUpdateInterface()
 * changed a description and example
+* moved BxUpdateManagerTimePeriod to BxUpdateManager.TimePeriod
 
 ## 0.9.7 (03.11.2018)
 ##### Improvements
