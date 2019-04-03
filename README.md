@@ -103,6 +103,12 @@ class SimpleController: UIViewController, BxUpdateManagerDelegate {
         dataManager.isActive = true
     }
     
+    func viewWillDisappear(_ animated: Bool){
+        super.viewWillDisappear(animated)
+        // If Controller has deinited then isActive = false should called from destructor and that wouldn't need:
+        dataManager.isActive = false
+    }
+    
     // MARK - BxUpdateManagerDelegate
 
     func updateManagerLoadData(_ updateManager: BxUpdateManager)
