@@ -132,7 +132,6 @@
 				F9B149221F013F7C00DC43C4 /* Frameworks */,
 				F9B149231F013F7C00DC43C4 /* Resources */,
 				C9890F10A8CE42B133ADE653 /* [CP] Embed Pods Frameworks */,
-				9EE671A0D22B2C66D65AAF8B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -195,21 +194,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9EE671A0D22B2C66D65AAF8B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BxUpdateManager/Pods-BxUpdateManager-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		AADADCD64D2AD3ED023DED42 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,7 +218,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BxUpdateManager/Pods-BxUpdateManager-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-BxUpdateManager/Pods-BxUpdateManager-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -243,7 +227,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BxUpdateManager/Pods-BxUpdateManager-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BxUpdateManager/Pods-BxUpdateManager-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

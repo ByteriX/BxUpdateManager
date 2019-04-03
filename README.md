@@ -85,21 +85,36 @@ $ git submodule add https://github.com/ByteriX/BxUpdateManager.git
 
 class SimpleController: UIViewController, BxUpdateManagerDelegate {
 	
-	let dataManager = BxUpdateManager()
+	let dataManager = BxUpdateManager(updateDataInterval: 15.0,
+        updateInterfaceInterval: 5.0,
+        checkInterval: 1.0,
+        timePeriod: .fromStopLoading,
+        isActive: false)
 	
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dataManager.delegate = self
     }
+    
+    func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        // The BxUpdateManager instance initiate as deactivated, then you will need activate it:
+        dataManager.isActive = true
+    }
+    
+    // MARK - BxUpdateManagerDelegate
 
     func updateManagerLoadData(_ updateManager: BxUpdateManager)
     {
 
         // loading...
 
-        //callback for finished loading:
+        // When loading is finished without error call that:
         updateManager.stopLoading()
+        
+        //If loading fail with error call that:
+        // updateManager.stopLoading(error: error)
     }
 
     func updateManagerUpdateInterface(_ updateManager: BxUpdateManager)

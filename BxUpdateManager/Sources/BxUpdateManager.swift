@@ -70,7 +70,7 @@ open class BxUpdateManager {
     fileprivate var isFirstActivated: Bool = true
     
     ///
-    /// active = true will start checking,
+    /// If active == true will start checking,
     /// if you want to update data before, you can call updateData() before activation
     /// and active = true after that doesn't call update immediately
     ///
@@ -98,7 +98,8 @@ open class BxUpdateManager {
     public init(updateDataInterval: TimeInterval = 60.0,
         updateInterfaceInterval: TimeInterval = 10.0,
         checkInterval: TimeInterval = 5.0,
-        timePeriod: BxUpdateManagerTimePeriod = .fromStopLoading)
+        timePeriod: BxUpdateManagerTimePeriod = .fromStopLoading,
+        active: Bool = false)
     {
         self.updateDataInterval = updateDataInterval
         self.updateInterfaceInterval = updateInterfaceInterval
@@ -111,7 +112,7 @@ open class BxUpdateManager {
                 self?.checkUpdateWithError()
             })
         }
-        
+        ({self.active = active})()
     }
     
     deinit {
@@ -158,8 +159,7 @@ open class BxUpdateManager {
         self.didUpdateData()
     }
     
-    /// need for overriding if need incapsulate data in Manager
-    open func didUpdateData()
+    fileprivate func didUpdateData()
     {
         lastLocalUpdateData = Date()
         
@@ -184,23 +184,23 @@ open class BxUpdateManager {
         }
     }
     
-    // TODO: this method only work in dataUpdateQueue
-    public func toUpdateData() {
+    // this method only work in dataUpdateQueue
+    private func toUpdateData() {
         checkLocalUpdateData = Date().addingTimeInterval( -1 * updateDataInterval - 1)
     }
     
-    // TODO: this method only work in dataUpdateQueue
-    public func resetUpdateDataTime() {
+    // this method only work in dataUpdateQueue
+    private func resetUpdateDataTime() {
         checkLocalUpdateData = Date()
     }
     
-    // TODO: this method only work in dataUpdateQueue
-    public func toUpdateInterface() {
+    // this method only work in dataUpdateQueue
+    private func toUpdateInterface() {
         checkLocalUpdateInterface = Date().addingTimeInterval( -1 * updateInterfaceInterval - 1)
     }
     
-    // TODO: this method only work in dataUpdateQueue
-    public func resetUpdateInterfaceTime() {
+    // this method only work in dataUpdateQueue
+    private func resetUpdateInterfaceTime() {
         checkLocalUpdateInterface = Date()
     }
     
@@ -241,7 +241,7 @@ open class BxUpdateManager {
         checkUpdate()
     }
     
-    internal func updateInterfaceExecute()
+    private func updateInterfaceExecute()
     {
         if let delegate = delegate {
             delegate.updateManagerUpdateInterface(self)
@@ -249,7 +249,7 @@ open class BxUpdateManager {
         didUpdateInterface()
     }
     
-    internal func didUpdateInterface()
+    private func didUpdateInterface()
     {
         self.lastLocalUpdateInterface = Date()
     }
