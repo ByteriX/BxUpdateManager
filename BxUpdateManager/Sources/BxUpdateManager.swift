@@ -70,17 +70,17 @@ open class BxUpdateManager {
     fileprivate var isFirstActivated: Bool = true
     
     ///
-    /// If active == true will start checking,
+    /// If isActive == true will start checking,
     /// if you want to update data before, you can call updateData() before activation
-    /// and active = true after that doesn't call update immediately
+    /// and isActive = true after that doesn't call update immediately
     ///
-    /// Please set active = false else dealloc not will called
+    /// Please set isActive = false else dealloc not will called
     ///
-    public var active: Bool = false {
+    public var isActive: Bool = false {
         didSet {
             timer?.invalidate()
             timer = nil
-            if active {
+            if isActive {
                 timer = Timer.scheduledTimer(timeInterval: checkInterval, target: self, selector: #selector(checkTimerUpdate), userInfo: nil, repeats: true)
                 if isFirstActivated {
                     isFirstActivated = false
@@ -99,7 +99,7 @@ open class BxUpdateManager {
         updateInterfaceInterval: TimeInterval = 10.0,
         checkInterval: TimeInterval = 5.0,
         timePeriod: BxUpdateManagerTimePeriod = .fromStopLoading,
-        active: Bool = false)
+        isActive: Bool = false)
     {
         self.updateDataInterval = updateDataInterval
         self.updateInterfaceInterval = updateInterfaceInterval
@@ -112,12 +112,12 @@ open class BxUpdateManager {
                 self?.checkUpdateWithError()
             })
         }
-        ({self.active = active})()
+        ({self.isActive = isActive})()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: BxUpdateManager.enterForegroundNotification, object: nil)
-        ({active = false})()
+        ({isActive = false})()
     }
     
     /// immediate update from other
@@ -136,7 +136,7 @@ open class BxUpdateManager {
                 guard let this = self else {
                     return
                 }
-                if this.active {
+                if this.isActive {
                     this.internalCheckUpdate()
                 }
         }
