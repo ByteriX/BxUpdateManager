@@ -32,9 +32,9 @@ public protocol BxUpdateManagerDelegate : AnyObject {
 open class BxUpdateManager {
     
     public enum TimePeriod : Int {
-        // next iteration calling will initiate immediatly with starting of a loading data
+        /// next iteration calling will initiate immediatly with starting of a loading data
         case fromStartLoading
-        // next iteration calling will initiate only when a loading data has ended
+        /// next iteration calling will initiate only when a loading data has ended
         case fromStopLoading
     }
     
