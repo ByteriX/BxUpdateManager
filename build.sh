@@ -26,6 +26,7 @@ checkExit(){
 gitPush(){
     git add "${WORK_SPEC_PATH}"
     git commit -m "${VERSION_NUMBER} release"
+    git push -f
     git tag -f -a "${VERSION_NUMBER}" -m build
 	git push -f --tags
 }
