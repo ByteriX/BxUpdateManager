@@ -5,6 +5,10 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
+## 1.0.1 (11.06.2019)
+##### Improvements
+* swift_versions changed
+
 ## 1.0.0 (03.04.2019)
 ##### Improvements
 * renamed active to isActivated
