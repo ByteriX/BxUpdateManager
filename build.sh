@@ -23,13 +23,17 @@ checkExit(){
     fi
 }
 
-tag(){
+gitPush(){
 	git tag -f -a "${VERSION_NUMBER}" -m build
+    git commit -m "${VERSION_NUMBER} release"
 	git push -f --tags
 }
 
-clear(){
+startClear(){
 	rm -f -d "${WORK_SPEC_PATH}"
+}
+
+finishedClear(){
     rm -f -d "${WORK_SPEC_PATH}-e"
 }
 
@@ -42,13 +46,14 @@ if [[ "$1" != "" ]]
     fi
 . "$APP_CONFIG_PATH"
 
-
+startClear
+checkExit
 cp  -rf "${TEMPLATE_SPEC_PATH}" "${WORK_SPEC_PATH}"
 checkExit
 sed -i -e "s/$VAR_NAME/$VERSION_NUMBER/" "${WORK_SPEC_PATH}"
 checkExit
-tag
+gitPush
 checkExit
 pod trunk push "${WORK_SPEC_PATH}" --allow-warnings --verbose
 checkExit
-clear
+finishedClear

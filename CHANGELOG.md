@@ -5,6 +5,10 @@ ByteriX, 2017. All right reserved.
 
 # Versions
 
+## 1.0.2 (11.06.2019)
+##### Improvements
+* new build script with pushing podspec
+
 ## 1.0.1 (11.06.2019)
 ##### Improvements
 * swift_versions changed
