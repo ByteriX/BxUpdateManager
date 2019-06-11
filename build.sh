@@ -24,8 +24,9 @@ checkExit(){
 }
 
 gitPush(){
-	git tag -f -a "${VERSION_NUMBER}" -m build
+    git add "${WORK_SPEC_PATH}"
     git commit -m "${VERSION_NUMBER} release"
+    git tag -f -a "${VERSION_NUMBER}" -m build
 	git push -f --tags
 }
 
@@ -52,8 +53,9 @@ cp  -rf "${TEMPLATE_SPEC_PATH}" "${WORK_SPEC_PATH}"
 checkExit
 sed -i -e "s/$VAR_NAME/$VERSION_NUMBER/" "${WORK_SPEC_PATH}"
 checkExit
+finishedClear
+checkExit
 gitPush
 checkExit
 pod trunk push "${WORK_SPEC_PATH}" --allow-warnings --verbose
 checkExit
-finishedClear
