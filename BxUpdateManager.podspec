@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "BxUpdateManager"
-  s.version      = "1.0.2"
+  s.version      = "1.0.3"
   s.summary      = "Swift manager for checking update from network and local."
   s.description  = "Swift manager for checking update from network and local."
   s.homepage     = "https://github.com/ByteriX/BxUpdateManager.git"
@@ -56,7 +56,7 @@ Pod::Spec.new do |s|
   #
 
   s.platform     = :ios, "8.0"
-  s.swift_versions = "4.0"
+  s.swift_versions = ['3.0', '3.1', '3.2', '4.0', '4.1', '4.2', '5.0', '5.1', '5.2']
 
 #s.ios.deployment_target = "5.0"
 #s.osx.deployment_target = "10.7"
