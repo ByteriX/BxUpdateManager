@@ -9,9 +9,8 @@ Swift manager for checking update from network and local.
 
 ## Requirements
 
-- iOS 8.0+
-- Swift 3.0+
-- Swift 3.x/4.x/5.0 supported
+- iOS 8.0+ : iOS 8.x/9.x/10.x/11.x/12.x/13.x
+- Swift 3.0+ : Swift 3.x/4.x/5.x supported
 
 ## Installation
 
